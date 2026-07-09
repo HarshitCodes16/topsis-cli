@@ -1,23 +1,63 @@
-# TOPSIS-Harshit-102303276
+# TopsisCore
 
-A Python package to implement the **Technique for Order of Preference by Similarity to Ideal Solution (TOPSIS)**. This command-line tool takes a dataset of alternatives and criteria, applies weights and impacts, and calculates a ranking score for each alternative.
+> **Multi-Criteria Decision Making — Made Simple.**  
+> A Python package + web platform implementing the TOPSIS algorithm to rank alternatives based on weighted criteria.
 
-[Web Demo](https://topsis-zzre.vercel.app)
+[![PyPI](https://img.shields.io/pypi/v/topsis-core?color=blue&label=PyPI)](https://pypi.org/project/topsis-core/)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
+[![Live Demo](https://img.shields.io/badge/Web%20Demo-Live-green)](https://topsis-zzre.vercel.app)
 
-[PyPI Package](https://pypi.org/project/topsis-harshit-102303276)
+---
 
+## What is TOPSIS?
 
-## Installation
+**TOPSIS (Technique for Order of Preference by Similarity to Ideal Solution)** is a multi-criteria decision-making algorithm. It ranks a set of alternatives by finding which one is closest to the ideal best solution and farthest from the ideal worst solution.
 
-You can install the package using `pip` with the following command:
+**Real-world use cases:**
+- Selecting the best ML model from multiple benchmarked models
+- Ranking suppliers/vendors based on cost, quality, and delivery
+- Shortlisting candidates in hiring based on weighted criteria
+- Comparing investment funds based on performance metrics
+- Any decision problem with multiple conflicting criteria
+
+---
+
+## Project Components
+
+| Component | Description | Link |
+|---|---|---|
+| 🐍 PyPI Package | CLI tool — run TOPSIS from terminal | [topsis-core](https://pypi.org/project/topsis-core/) |
+| 🌐 Web Platform | Upload CSV, configure weights, get ranked results + email delivery | [topsis-zzre.vercel.app](https://topsis-zzre.vercel.app) |
+
+---
+
+## Web Platform
+
+No installation needed — upload your dataset directly in the browser.
+
+### Homepage
+![Web Home](assets/web-home.png)
+
+### Results with Score Distribution Chart
+![Web Results](assets/web-results.png)
+
+### Downloadable Report (PDF)
+![Web Report](assets/web-report.png)
+
+### Email Delivery
+Results are automatically emailed after analysis.
+
+![Email Result](assets/email-result.png)
+
+---
+
+## CLI Package
+
+### Installation
 
 ```bash
-pip install topsis-harshit-102303276
+pip install topsis-core
 ```
-
-## How to Use
-
-This tool is designed to be run from the command line. You need to provide an input CSV or Excel file with your dataset, along with a list of weights, a list of impacts, and the name of the output file where results will be stored.
 
 ### Command Format
 
@@ -27,60 +67,81 @@ topsis <InputDataFile> <Weights> <Impacts> <ResultFileName>
 
 ### Parameters
 
-1. **InputDataFile**: The path to the `.csv` or `.xlsx` file.
+| Parameter | Description |
+|---|---|
+| `InputDataFile` | Path to `.csv` or `.xlsx` file (3+ columns required) |
+| `Weights` | Comma-separated importance values e.g. `"1,1,2,1"` |
+| `Impacts` | Comma-separated `+` or `-` per criterion |
+| `ResultFileName` | Output CSV filename |
 
-   * The file should have **at least 3 columns**.
-   * The **first column** should contain the object or model names (e.g., M1, M2, M3). This column is kept in the output but not used for calculations.
-   * The **remaining columns** must contain numeric values representing the criteria.
+- **First column** — alternative names (M1, M2 etc.) — not used in calculations
+- **Remaining columns** — numeric criteria values
+- `+` → higher is better (benefit criterion)
+- `-` → lower is better (cost criterion)
 
-2. **Weights**: A comma-separated list of numbers showing the relative importance of each criterion (for example, `"1,1,1,1"`).
+---
 
-3. **Impacts**: A comma-separated list of symbols (`+` or `-`) specifying whether a higher or lower value is preferred for each criterion.
+## Example Walkthrough
 
-   * `+` means higher is better (benefit).
-   * `-` means lower is better (cost).
+### Input Data (`data.csv`)
 
-4. **ResultFileName**: The name of the CSV file where the output will be saved.
+Ranking 5 mutual funds based on 5 performance parameters:
 
-## Example
+![Input Data](assets/data-input.png)
 
-Suppose we want to rank 5 mobile phone models using 4 criteria: **Price**, **Storage**, **Camera**, and **Looks**.
-
-### 1. Input File (`data.csv`)
-
-| Model | Price | Storage | Camera | Looks |
-| ----- | ----- | ------- | ------ | ----- |
-| M1    | 250   | 16      | 12     | 5     |
-| M2    | 200   | 16      | 8      | 3     |
-| M3    | 300   | 32      | 16     | 4     |
-| M4    | 275   | 32      | 8      | 4     |
-| M5    | 225   | 16      | 16     | 2     |
-
-* **Interpretation of criteria**:
-* **Price**: Lower value is preferred (`-`).
-* **Storage**: Higher value is preferred (`+`).
-* **Camera**: Higher value is preferred (`+`).
-* **Looks**: Higher value is preferred (`+`).
-
-### 2. Run the Command
-
-Execute this in your terminal:
+### Run the Command
 
 ```bash
-topsis data.csv "1,1,1,1" "-,+,+,+" result.csv
+topsis data.csv "1,1,2,4,6" "+,-,+,-,-" result.csv
 ```
 
-* **Weights**: `1,1,1,1` (all criteria have equal importance).
-* **Impacts**: `-,+,+,+` (Price is a cost criterion, the rest are benefit criteria).
+### CLI Output
 
-### 3. Output File (`result.csv`)
+![CLI Output](assets/cli-output.png)
 
-The program creates a file named `result.csv` that includes the original data along with two extra columns: **Topsis Score** and **Rank**.
+### Result (`result.csv`)
 
-| Model | Price | Storage | Camera | Looks | Topsis Score | Rank |
-| ----- | ----- | ------- | ------ | ----- | ------------ | ---- |
-| M1    | 250   | 16      | 12     | 5     | 0.534277     | 3    |
-| M2    | 200   | 16      | 8      | 3     | 0.308368     | 5    |
-| M3    | 300   | 32      | 16     | 4     | 0.691632     | 1    |
-| M4    | 275   | 32      | 8      | 4     | 0.534737     | 2    |
-| M5    | 225   | 16      | 16     | 2     | 0.492650     | 4    |
+TOPSIS Score and Rank columns are appended to the original data:
+
+![Result Data](assets/data-output.png)
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Algorithm | Python, NumPy, Pandas |
+| CLI | Python `sys.argv`, entry points via `pyproject.toml` |
+| Web Frontend | Next.js, Tailwind CSS, Recharts |
+| Email Delivery | Resend API |
+| Package Registry | PyPI (`topsis-core`) |
+| Deployment | Vercel |
+
+---
+
+## Repository Structure
+
+```
+topsis-rana/
+├── package/               # PyPI package source
+│   ├── src/
+│   │   └── topsis_core/
+│   │       └── __init__.py   # Core TOPSIS logic + CLI entry
+│   └── pyproject.toml
+├── topsis-website/        # Next.js web platform
+│   ├── app/
+│   │   ├── page.tsx          # Main UI with file upload + chart
+│   │   └── api/send-email/   # Resend email API route
+│   └── package.json
+├── data.csv               # Sample input file
+└── result.csv             # Sample output file
+```
+
+---
+
+## Author
+
+**Harshit Katyal**  
+B.E. Computer Engineering — Thapar Institute of Engineering & Technology  
+[GitHub](https://github.com/HarshitCodes16) • [LinkedIn](https://www.linkedin.com/in/harshit-katyal-038825297/) • [PyPI](https://pypi.org/project/topsis-core/)
