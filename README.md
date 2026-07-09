@@ -6,6 +6,7 @@
 [![PyPI](https://img.shields.io/pypi/v/topsis-core?color=blue&label=PyPI)](https://pypi.org/project/topsis-core/)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
 [![Live Demo](https://img.shields.io/badge/Web%20Demo-Live-green)](https://topsis-zzre.vercel.app)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
